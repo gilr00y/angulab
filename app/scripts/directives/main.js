@@ -20,7 +20,9 @@ angular.module('angulabApp')
   .directive('designable', ['$compile', function($compile) {
     return {
       restrict: 'A',
+      scope: { name: '=' },
       link: function(scope, element) {
+        // new DesignElement(element);
 
         element.on('click', function() {
           var designElement = angular.element(element[0].innerHTML);
