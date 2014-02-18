@@ -1,4 +1,7 @@
 'use strict';
+
+var SVG = window.SVG;
+
 var images = [
   {src:'images/SVG/backpack 2.svg'},
   {src:'images/SVG/car.svg'},
@@ -34,5 +37,8 @@ var images = [
 
 angular.module('angulabApp')
   .controller('MainCtrl', function ($scope) {
+
+    window.Design = SVG('drawing');
+
     $scope.images = images;
   });

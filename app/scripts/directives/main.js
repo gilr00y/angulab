@@ -1,13 +1,28 @@
 'use strict';
 
+var SVG = window.SVG;
+
 angular.module('angulabApp')
-  .directive('superman', function() {
+  .directive('designable', ['$compile', function($compile) {
     return {
       restrict: 'A',
-      link: function(arg1, arg2, arg3) {
-        console.log('1: ' + arg1);
-        console.log('2: ' + arg2);
-        console.log('3: ' + arg3);
+      link: function(scope, element) {
+
+        element.on('click', function() {
+          var designElement = angular.element(element[0].innerHTML);
+          designElement.attr('clicked', true);
+
+          angular.element(window.Design.node).prepend($compile(designElement)(scope));
+          designElement.on('click', function() { SVG(this).draggable(); });
+        });
+      }
+    };
+  }])
+  .directive('clicker', function() {
+    return {
+      restrict: 'A',
+      link: function(scope, element) {
+        element.on('click', function() { console.log('SECONDARY CLICKED'); });
       }
     };
   });
