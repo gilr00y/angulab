@@ -25,6 +25,12 @@ html {
   }
 }
 
+.designable-image {
+  &:hover {
+    cursor: pointer;
+  };
+}
+
 #drawing {
   height:600px;
   width: 600px;

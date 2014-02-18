@@ -2,6 +2,20 @@
 
 var SVG = window.SVG;
 
+// these should be moved into a service
+function wrapSVG(element) {
+  return SVG(element);
+}
+
+function moveSVG() {
+  var element = wrapSVG(this);
+  element.dmove(20, 20);
+}
+
+function serializeSVG(svg) {
+  return new XMLSerializer().serializeToString(svg);
+}
+
 angular.module('angulabApp')
   .directive('designable', ['$compile', function($compile) {
     return {
@@ -13,7 +27,7 @@ angular.module('angulabApp')
           designElement.attr('clicked', true);
 
           angular.element(window.Design.node).prepend($compile(designElement)(scope));
-          designElement.on('click', function() { SVG(this).draggable(); });
+          designElement.on('click', moveSVG);
         });
       }
     };
