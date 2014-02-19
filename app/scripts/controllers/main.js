@@ -1,11 +1,9 @@
 'use strict';
 
-var SVG = window.SVG;
-
 angular.module('angulabApp')
-  .controller('MainCtrl', ['$scope', 'imageService', function ($scope, imageService) {
+  .controller('MainCtrl', ['$scope', 'imageService', 'svgService', function ($scope, imageService, svgService) {
 
-    window.Design = SVG('drawing');
-
+    // move this init to directly off the angular module (run or config or somethign)
+    svgService.init('#drawing');
     $scope.images = imageService.getImages();
   }]);
