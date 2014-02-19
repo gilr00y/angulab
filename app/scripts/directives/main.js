@@ -26,7 +26,8 @@ angular.module('angulabApp')
           //something here
         },
         post: function(scope, element) {
-          SVG(element[0]).draggable();
+          var draggableElement = element[0];
+          SVG(draggableElement).draggable();
         }
       }
 
