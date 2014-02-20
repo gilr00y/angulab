@@ -1,22 +1,22 @@
 'use strict';
 
-var SVG = window.SVG;
-
 angular.module('angulabApp')
-  .directive('designable', ['$compile', function($compile) {
+  .directive('designable', ['$compile', 'svgService', function($compile, svgService) {
     return {
       restrict: 'A',
-      scope: { name: '=' },
+      scope: {
+        name: '='
+      },
       link: function(scope, element) {
 
         element.on('click', function() {
-          // var designElement = angular.element(element[0].innerHTML);
-          var group = window.Design.group();
-          var image = group.image(scope.name);
+          //var group = window.Design.group();
+          //var image = group.image(scope.name);
+          var image = svgService.loadElement(scope.name);
           image.attr({
-            'draggable':''
-          , 'rotatable':''
-          , 'resizable':''
+            'draggable':'',
+            'rotatable':'',
+            'resizable':''
           });
 
           $compile(image.node)(scope);
@@ -24,79 +24,74 @@ angular.module('angulabApp')
       }
     };
   }])
-  .directive('draggable', function() {
+  .directive('draggable', ['svgService', function(svgService) {
     return {
       restrict: 'A',
-      link: {
-        post: function(scope, element) {
-          var svgEl = SVG.get(element[0].id)
-            , imageGroup = svgEl.parent;
+      link: function(scope, element) {
+        var svgEl = svgService.getElementById(element[0].id),
+          imageGroup = svgEl.parent;
 
-          imageGroup.draggable();
-        }
+          svgService.addDrag(imageGroup);
       }
     };
-  })
-  .directive('rotatable', function() {
+  }])
+  .directive('rotatable', ['svgService', function(svgService) {
+    return {
+      restrict: 'A',
+      link: function(scope, element) {
+        var svgEl = svgService.getElementById(element[0].id),
+          imageGroup = svgEl.parent,
+          rotateHandle;
+
+        imageGroup
+          .on('mouseenter', function() {
+            rotateHandle = svgService.drawRect(imageGroup, 12, 12);
+            rotateHandle
+              .on('mousedown', function() {
+                console.log('handle clicked, turning off drag');
+                svgService.removeDrag(imageGroup);
+              })
+              .on('mouseup', function() {
+                console.log('handle lifted, turning on drag');
+                svgService.addDrag(imageGroup);
+              });
+          })
+          .on('mouseleave', function() {
+            svgService.removeElement(rotateHandle);
+          });
+      }
+    };
+  }])
+  .directive('resizable', ['svgService', function(svgService) {
     return {
       restrict: 'A',
       link: {
         post: function(scope, element) {
-          var svgEl = SVG.get(element[0].id)
-            , imageGroup = svgEl.parent
-            , rotateHandle;
-
-          // console.log(svgEl.center());
+          var svgEl = svgService.getElementById(element[0].id),
+            imageGroup = svgEl.parent,
+            resizeHandle;
 
           imageGroup
             .on('mouseenter', function() {
-              rotateHandle = imageGroup.rect(12,12);
-              rotateHandle
-                .on('mousedown', function() {
-                  console.log('handle clicked, turning off drag');
-                  imageGroup.fixed();
-                })
-                .on('mouseup', function() {
-                  console.log('handle lifted, turning on drag');
-                  imageGroup.draggable();
-                });
-            })
-            .on('mouseleave', function() {
-              rotateHandle.remove();
-
-            })
-        }
-      }
-    };
-  })
-  .directive('resizable', function() {
-    return {
-      restrict: 'A',
-      link: {
-        post: function(scope, element) {
-          var svgEl = SVG.get(element[0].id)
-            , imageGroup = svgEl.parent
-            , resizeHandle;
-          imageGroup
-            .on('mouseenter', function() {
-              resizeHandle = imageGroup.rect(12,12);
+              resizeHandle = svgService.drawRect(imageGroup, 12, 12);
               resizeHandle
                 .on('mousedown', function() {
                   console.log('resize handle clicked, turning off drag');
+                  svgService.removeDrag(imageGroup);
                 })
                 .on('mouseup', function() {
                   console.log('resize handle lifted, turning on drag');
-                  imageGroup.draggable();
+                  svgService.addDrag(imageGroup);
                 });
             })
             .on('mouseleave', function() {
-              resizeHandle.remove();
+              svgService.removeElement(resizeHandle);
 
-            })
+            });
         }
       }
     };
-  });
+  }]);
 
 
 
