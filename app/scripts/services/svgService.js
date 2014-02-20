@@ -6,9 +6,9 @@ angular.module('angulabApp')
       init: function(selector) {
         snap = Snap(selector);
       },
-      //getDesignNode: function() {
-      //  return snap.node;
-      //},
+      getSnapNode: function() {
+        return snap.node;
+      },
       getSnap: function() {
         return snap;
       },

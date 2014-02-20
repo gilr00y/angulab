@@ -1,9 +1,11 @@
 <div class="lab-container">
   <svg id="drawing"></svg>
 
+  <input ng-model="svg.draggable">
+
   <ul class="svg-list">
     <li ng-repeat="image in images">
-      <span class="designable-image" ng-include="image.src" designable name="image.src"></span>
+    <span class="designable-image" ng-include="image.src" designable name="image.src"></span>
     </li>
   </ul>
 </div>
