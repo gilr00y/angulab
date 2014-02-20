@@ -16,7 +16,7 @@ angular.module('angulabApp')
           image.attr({
             'draggable':''
           , 'rotatable':''
-          , 'resizable'
+          , 'resizable':''
           });
 
           $compile(image.node)(scope);
