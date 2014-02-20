@@ -10,10 +10,16 @@ angular.module('angulabApp')
       link: function(scope, element) {
 
         element.on('click', function() {
-          var designElement = angular.element(element[0].innerHTML);
-          designElement.attr('draggable', true);
+          // var designElement = angular.element(element[0].innerHTML);
+          var group = window.Design.group();
+          var image = group.image(scope.name);
+          image.attr({
+            'draggable':''
+          , 'rotatable':''
+          , 'resizable'
+          });
 
-          angular.element(window.Design.node).prepend($compile(designElement)(scope));
+          $compile(image.node)(scope);
         });
       }
     };
@@ -22,14 +28,76 @@ angular.module('angulabApp')
     return {
       restrict: 'A',
       link: {
-        pre: function(scope, element) {
-          //something here
-        },
         post: function(scope, element) {
-          var draggableElement = element[0];
-          SVG(draggableElement).draggable();
+          var svgEl = SVG.get(element[0].id)
+            , imageGroup = svgEl.parent;
+
+          imageGroup.draggable();
         }
       }
+    };
+  })
+  .directive('rotatable', function() {
+    return {
+      restrict: 'A',
+      link: {
+        post: function(scope, element) {
+          var svgEl = SVG.get(element[0].id)
+            , imageGroup = svgEl.parent
+            , rotateHandle;
 
+          // console.log(svgEl.center());
+
+          imageGroup
+            .on('mouseenter', function() {
+              rotateHandle = imageGroup.rect(12,12);
+              rotateHandle
+                .on('mousedown', function() {
+                  console.log('handle clicked, turning off drag');
+                  imageGroup.fixed();
+                })
+                .on('mouseup', function() {
+                  console.log('handle lifted, turning on drag');
+                  imageGroup.draggable();
+                });
+            })
+            .on('mouseleave', function() {
+              rotateHandle.remove();
+
+            })
+        }
+      }
+    };
+  })
+  .directive('resizable', function() {
+    return {
+      restrict: 'A',
+      link: {
+        post: function(scope, element) {
+          var svgEl = SVG.get(element[0].id)
+            , imageGroup = svgEl.parent
+            , resizeHandle;
+          imageGroup
+            .on('mouseenter', function() {
+              resizeHandle = imageGroup.rect(12,12);
+              resizeHandle
+                .on('mousedown', function() {
+                  console.log('resize handle clicked, turning off drag');
+                })
+                .on('mouseup', function() {
+                  console.log('resize handle lifted, turning on drag');
+                  imageGroup.draggable();
+                });
+            })
+            .on('mouseleave', function() {
+              resizeHandle.remove();
+
+            })
+        }
+      }
     };
   });
+
+
+
+
