@@ -41,20 +41,37 @@ angular.module('angulabApp')
       link: function(scope, element) {
         var svgEl = svgService.getElementById(element[0].id),
           imageGroup = svgEl.parent,
-          rotateHandle;
+          rotateHandle,
+          rotateHandleSize = 12,
+          point1 = svgService.createPoint(15,16),
+          point2;
 
         imageGroup
           .on('mouseenter', function() {
-            rotateHandle = svgService.drawRect(imageGroup, 12, 12);
+            rotateHandle = svgService.drawRect(imageGroup, rotateHandleSize, rotateHandleSize)
+                             .dmove(svgEl.width() - rotateHandleSize, svgEl.height() - rotateHandleSize)
+                             .fill('red');
+            //rotateHandle.draggable();
             rotateHandle
-              .on('mousedown', function() {
-                console.log('handle clicked, turning off drag');
+              .on('mousedown', function(e) {
+                console.log('rotate handle clicked, turning off drag');
                 svgService.removeDrag(imageGroup);
+                //point1 = svgService.createPoint(e.x, e.y);
               })
-              .on('mouseup', function() {
-                console.log('handle lifted, turning on drag');
+              .on('mouseup', function(e) {
+                console.log('rotate handle lifted, turning on drag');
                 svgService.addDrag(imageGroup);
+                //point2 = svgService.createPoint(e.x, e.y);
+                //var angle = svgService.angleBetween(point1, point2, midpoint);
+                //svgService.transform(imageGroup, 'rotate', angle);
               });
+          })
+          .on('mousemove', function(e) {
+            point2 = svgService.createPoint(e.x, e.y);
+            var angle = svgService.angleBetween(point1, point2);
+            console.log(angle);
+            svgService.transform(imageGroup, 'rotate', angle);
+            point1 = point2;
           })
           .on('mouseleave', function() {
             svgService.removeElement(rotateHandle);
