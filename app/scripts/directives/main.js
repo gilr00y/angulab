@@ -10,26 +10,46 @@ angular.module('angulabApp')
       link: function(scope, element) {
 
         element.on('click', function() {
-          var designElement = angular.element(element[0].innerHTML);
-          designElement.attr('draggable', true);
+          var group = window.Design.group();
+          var image = group.image(scope.name);
+          image.attr({
+            'draggable':''
+          , 'rotatable':''
+          , 'resizable':''
+          });
 
-          angular.element(window.Design.node).prepend($compile(designElement)(scope));
+          $compile(image.node)(scope);
         });
       }
     };
   }])
-  .directive('draggable', function() {
+  .directive('draggable', ['svgService', function(svgService) {
     return {
       restrict: 'A',
       link: {
-        pre: function(scope, element) {
-          //something here
-        },
         post: function(scope, element) {
-          var draggableElement = element[0];
-          SVG(draggableElement).draggable();
+          svgService.draggable(element);
         }
       }
-
     };
-  });
+  }])
+  .directive('resizable', ['svgService', function(svgService) {
+    return {
+      restrict: 'A',
+      link: {
+        post: function(scope, element) {
+          svgService.resizable(element);
+        }
+      }
+    };
+  }])
+  .directive('rotatable', ['svgService', function(svgService) {
+    return {
+      restrict: 'A',
+      link: {
+        post: function(scope, element) {
+          svgService.rotatable(element);
+        }
+      }
+    };
+  }]);
