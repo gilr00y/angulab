@@ -3,7 +3,7 @@
 var SVG = window.SVG;
 
 angular.module('angulabApp')
-  .directive('designable', ['$compile', function($compile) {
+  .directive('designable', ['$compile', 'elementService', function($compile, elementService) {
     return {
       restrict: 'A',
       scope: { name: '=' },
@@ -19,6 +19,9 @@ angular.module('angulabApp')
           });
 
           $compile(image.node)(scope);
+          scope.$apply(function() {
+            elementService.addElement({ src: scope.name }, group.node.id);
+          });
         });
       }
     };
@@ -26,30 +29,24 @@ angular.module('angulabApp')
   .directive('draggable', ['svgService', function(svgService) {
     return {
       restrict: 'A',
-      link: {
-        post: function(scope, element) {
-          svgService.draggable(element);
-        }
+      link: function(scope, element) {
+        svgService.draggable(element);
       }
     };
   }])
   .directive('resizable', ['svgService', function(svgService) {
     return {
       restrict: 'A',
-      link: {
-        post: function(scope, element) {
-          svgService.resizable(element);
-        }
+      link: function(scope, element) {
+        svgService.resizable(element);
       }
     };
   }])
   .directive('rotatable', ['svgService', function(svgService) {
     return {
       restrict: 'A',
-      link: {
-        post: function(scope, element) {
-          svgService.rotatable(element);
-        }
+      link: function(scope, element) {
+        svgService.rotatable(element);
       }
     };
   }]);

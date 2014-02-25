@@ -6,4 +6,12 @@
       <span class="designable-image" ng-include="image.src" designable name="image.src"></span>
     </li>
   </ul>
+  <br><br><br><br>
+  <ul class="sidebar">
+    <li ng-repeat="el in elements">
+      {{ el }}
+    </li>
+  </ul>
+  <br>
+  {{ elements }}
 </div>
