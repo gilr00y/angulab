@@ -5,7 +5,6 @@ var SVG = window.SVG;
 angular.module('angulabApp')
   .directive('designable', ['$compile', function($compile) {
     return {
-      restrict: 'A',
       scope: { name: '=' },
       link: function(scope, element) {
 
@@ -24,32 +23,17 @@ angular.module('angulabApp')
     };
   }])
   .directive('draggable', ['svgService', function(svgService) {
-    return {
-      restrict: 'A',
-      link: {
-        post: function(scope, element) {
-          svgService.draggable(element);
-        }
-      }
+    return function(scope, element) {
+      svgService.draggable(element);
     };
   }])
   .directive('resizable', ['svgService', function(svgService) {
-    return {
-      restrict: 'A',
-      link: {
-        post: function(scope, element) {
-          svgService.resizable(element);
-        }
-      }
+    return function(scope, element) {
+      svgService.resizable(element);
     };
   }])
   .directive('rotatable', ['svgService', function(svgService) {
-    return {
-      restrict: 'A',
-      link: {
-        post: function(scope, element) {
-          svgService.rotatable(element);
-        }
-      }
+    return function(scope, element) {
+      svgService.rotatable(element);
     };
   }]);
