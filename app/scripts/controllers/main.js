@@ -8,7 +8,6 @@ angular.module('angulabApp')
     window.Design = SVG('drawing');
 
     $scope.images = imageService.getImages();
-    elementService.addElement({ something: 'yo'}, 'test');
     $scope.elements = elementService.allElements;
 
     //$scope.$watch(function() { return elementService.allElements; }, function(elements) {

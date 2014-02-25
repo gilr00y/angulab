@@ -1,5 +1,5 @@
 angular.module('angulabApp')
-  .factory('svgService', function() {
+  .factory('svgService', ['elementService', '$rootScope', function(elementService, $rootScope) {
     function disableDrag(el) {
       el.fixed();
     };
@@ -59,6 +59,11 @@ angular.module('angulabApp')
           resizing = false;
           enableDrag(imageGroup);
           resizeHandle.remove();
+          // set width and height on resize
+          $rootScope.$apply(function() {
+            elementService.setAttr(imageGroup.attr('id'), 'height', element.attr('height'));
+            elementService.setAttr(imageGroup.attr('id'), 'width', element.attr('width'));
+          });
         };
       },
       rotatable: function(element) {
@@ -103,6 +108,10 @@ angular.module('angulabApp')
           rotating = false;
           enableDrag(imageGroup);
           rotateHandle.remove();
+          // set angle
+          $rootScope.$apply(function() {
+            elementService.setAttr(imageGroup.attr('id'), 'angle', svgEl.transform('rotation'));
+          });
         };
 
         imageGroup.on('mouseenter', function() {
@@ -120,7 +129,19 @@ angular.module('angulabApp')
       },
       draggable: function(element) {
         var imageGroup = SVG.get(element[0].id).parent;
-        imageGroup.draggable();
+        imageGroup.draggable({
+          minX: 10,
+          minY: 10,
+          maxX: 590,
+          maxY: 590
+        });
+        imageGroup.dragmove = function(delta, event) {
+          // set x and y coordinates after drag
+          $rootScope.$apply(function() {
+            elementService.setAttr(imageGroup.attr('id'), 'x', event.x);
+            elementService.setAttr(imageGroup.attr('id'), 'y', event.y);
+          });
+        };
       }
     }
-  });
+  }]);
