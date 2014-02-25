@@ -1,5 +1,5 @@
 angular.module('angulabApp')
-  .factory('svgService', function() {
+  .factory('svgService', ['$rootScope', function($rootScope) {
     function disableDrag(el) {
       el.fixed();
     };
@@ -123,4 +123,4 @@ angular.module('angulabApp')
         imageGroup.draggable();
       }
     }
-  });
+  }]);

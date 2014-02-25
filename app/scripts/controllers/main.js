@@ -8,4 +8,13 @@ angular.module('angulabApp')
     window.Design = SVG('drawing');
 
     $scope.images = imageService.getImages();
+  }])
+  .controller('DashboardCtrl', ['$scope', 'elementService', function($scope, elementService) {
+
+    $scope.elements = elementService.elements();
+    $scope.$on('elementsUpdated', function() {
+      $scope.elements = elementService.elements();
+      $scope.$apply();
+    });
+
   }]);

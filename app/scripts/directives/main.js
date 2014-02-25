@@ -3,7 +3,7 @@
 var SVG = window.SVG;
 
 angular.module('angulabApp')
-  .directive('designable', ['$compile', function($compile) {
+  .directive('designable', ['$compile', 'elementService', function($compile, elementService) {
     return {
       scope: { name: '=' },
       link: function(scope, element) {
@@ -16,6 +16,8 @@ angular.module('angulabApp')
           , 'rotatable':''
           , 'resizable':''
           });
+
+          elementService.addElement(image);
 
           $compile(image.node)(scope);
         });
