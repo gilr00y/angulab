@@ -1,0 +1,9 @@
+<div>
+  <table>
+    <th>{{ id }}</th>
+    <tr ng-repeat="(attr, value) in element">
+      <td><strong>{{ attr }}</strong></td>
+      <td><input ng-model="element[attr]"></td>
+    </tr>
+  </table>
+</div>

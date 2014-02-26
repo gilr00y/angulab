@@ -1,17 +1,16 @@
 <div class="lab-container">
   <div id="drawing"></div>
 
-  <ul class="svg-list">
-    <li ng-repeat="image in images">
-      <span class="designable-image" ng-include="image.src" designable name="image.src"></span>
-    </li>
-  </ul>
-  <br><br><br><br>
-  <ul class="sidebar">
-    <li ng-repeat="el in elements">
-      {{ el }}
-    </li>
-  </ul>
+  <div>
+    <ul class="svg-list">
+      <li ng-repeat="image in images">
+        <span class="designable-image" ng-include="image.src" designable name="image.src"></span>
+      </li>
+    </ul>
+  </div>
+  <div ng-repeat="(id, element) in elements" class="sidebar">
+    <svg-card element="element" id="{{ id }}"></svg-card>
+  </div>
   <br>
   {{ elements }}
 </div>
