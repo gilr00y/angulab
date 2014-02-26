@@ -6,12 +6,11 @@ angular.module('angulabApp')
   .directive('designable', ['$compile', 'elementService', function($compile, elementService) {
     return {
       restrict: 'A',
-      scope: { name: '=' },
-      link: function(scope, element) {
+      link: function(scope, element, attrs) {
 
         element.on('click', function() {
           var group = window.Design.group();
-          var image = group.image(scope.name);
+          var image = group.image(attrs.name);
           image.attr({
             'draggable':''
           , 'rotatable':''
@@ -20,7 +19,7 @@ angular.module('angulabApp')
 
           $compile(image.node)(scope);
           scope.$apply(function() {
-            elementService.addElement({ src: scope.name }, group.node.id);
+            elementService.addElement({ src: attrs.name }, group.node.id);
           });
         });
       }
