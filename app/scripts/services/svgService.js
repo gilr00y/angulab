@@ -1,3 +1,7 @@
+'use strict';
+
+var SVG = window.SVG;
+
 angular.module('angulabApp')
   .factory('svgService', ['elementService', '$rootScope', function(elementService, $rootScope) {
     function disableDrag(el) {
@@ -8,9 +12,23 @@ angular.module('angulabApp')
       el.draggable();
     };
 
-
     function radianToDegree(radians) {
       return radians * 360 / (2 * Math.PI);
+    };
+
+    var Handles = {
+      elements: [],
+
+      register: function(element) {
+        this.elements.push(element);
+      },
+
+      removeAll: function() {
+        var elLength = this.elements.length;
+        for(var i=0; i<elLength; i++) {
+          this.elements[i].remove();
+        };
+      }
     };
 
     return {
@@ -26,7 +44,9 @@ angular.module('angulabApp')
             var imageHeight = svgEl.height();
             var imageWidth = svgEl.width();
             if (!resizeHandle) {};
-            resizeHandle = imageGroup.rect(handleSize.width,handleSize.height).fill('red').move(imageWidth - handleSize.width, imageHeight - handleSize.height);
+            resizeHandle = imageGroup.image('images/resize.png').size(20,20).move(imageWidth - handleSize.width, imageHeight - handleSize.height);
+            Handles.register(resizeHandle);
+
             resizeHandle.on('mousedown', function(event) {
               resizeStart(event.x, event.y);
             });
@@ -34,7 +54,7 @@ angular.module('angulabApp')
         })
         .on('mouseleave', function() {
           if(!resizing) {
-            resizeHandle.remove();
+            Handles.removeAll();
           };
         });
 
@@ -58,7 +78,8 @@ angular.module('angulabApp')
         function resizeEnd() {
           resizing = false;
           enableDrag(imageGroup);
-          resizeHandle.remove();
+          Handles.removeAll();
+
           // set width and height on resize
           $rootScope.$apply(function() {
             elementService.setAttr(imageGroup.attr('id'), 'height', element.attr('height'));
@@ -107,7 +128,7 @@ angular.module('angulabApp')
         function endRotate() {
           rotating = false;
           enableDrag(imageGroup);
-          rotateHandle.remove();
+          Handles.removeAll();
           // set angle
           $rootScope.$apply(function() {
             elementService.setAttr(imageGroup.attr('id'), 'angle', svgEl.transform('rotation'));
@@ -116,14 +137,15 @@ angular.module('angulabApp')
 
         imageGroup.on('mouseenter', function() {
           // if(!rotateHandle) {
-            rotateHandle = imageGroup.rect(12,12);
+            rotateHandle = imageGroup.image('images/rotate.png').size(25,25);
+            Handles.register(rotateHandle);
             rotateHandle.on('mousedown', startRotate);
           // };
         });
 
         imageGroup.on('mouseleave', function() {
           if(!rotating) {
-            rotateHandle.remove();
+            Handles.removeAll();
           }
         });
       },

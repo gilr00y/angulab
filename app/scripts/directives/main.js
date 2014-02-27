@@ -11,6 +11,7 @@ angular.module('angulabApp')
         element.on('click', function() {
           var group = window.Design.group();
           var image = group.image(attrs.name);
+          image.size(70,70);
           image.attr({
             'draggable':''
           , 'rotatable':''
