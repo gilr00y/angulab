@@ -164,6 +164,9 @@ angular.module('angulabApp')
             elementService.setAttr(imageGroup.attr('id'), 'y', event.y);
           });
         };
+      },
+      wrapInSVG: function(elementId) {
+        return SVG(elementId);
       }
     }
   }]);

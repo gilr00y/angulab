@@ -4,19 +4,34 @@ describe('Controller: MainCtrl', function () {
 
   // load the controller's module
   beforeEach(module('angulabApp'));
+  beforeEach(angular.mock.module('angulabAppMock'));
 
-  var MainCtrl,
-    scope;
+  var MainCtrl, scope;
 
-  // Initialize the controller and a mock scope
-  beforeEach(inject(function ($controller, $rootScope) {
+  // Initialize the controller
+  beforeEach(inject(function ($controller, $rootScope, $imageServiceMock, $elementServiceMock, $svgServiceMock) {
     scope = $rootScope.$new();
+    var imageServiceMock = $imageServiceMock;
+    var elementServiceMock = $elementServiceMock;
+    var svgServiceMock = $svgServiceMock;
+
     MainCtrl = $controller('MainCtrl', {
-      $scope: scope
+      $scope: scope,
+      imageService: imageServiceMock,
+      elementService: elementServiceMock,
+      svgService: svgServiceMock
     });
   }));
 
-  it('should attach a list of awesomeThings to the scope', function () {
-    expect(scope.awesomeThings.length).toBe(3);
+  describe('MainCtrl', function() {
+    it('should set images to images from imageService', function () {
+      expect(scope.images.length).toBe(1);
+      expect(scope.images[0].src).toBe('something.svg');
+    });
+
+    it('should set elements to elements from elementService', function() {
+      expect(Object.keys(scope.elements).length).toBe(1);
+      expect(scope.elements.testSVG).toEqual({ height: 10, width: 20});
+    });
   });
 });

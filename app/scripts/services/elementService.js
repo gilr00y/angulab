@@ -1,12 +1,13 @@
 angular.module('angulabApp')
   .factory('elementService', function() {
     var elements = {};
-
     return {
       addElement: function(element, id) {
         elements[id] = element;
       },
-      allElements: elements,
+      allElements: function() {
+        return elements;
+      },
       setAttr: function(id, attr, value) {
         elements[id][attr] = value;
       },
