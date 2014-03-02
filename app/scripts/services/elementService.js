@@ -9,10 +9,20 @@ angular.module('angulabApp')
         return elements;
       },
       setAttr: function(id, attr, value) {
-        elements[id][attr] = value;
+        if(typeof elements[id] !== 'undefined') {
+          elements[id][attr] = value;
+        }
+        else {
+          throw new Error('Element with id: ' + id + ' does not exist');
+        }
       },
       getAttr: function(id, attr) {
-        return elements[id][attr];
+        if(typeof elements[id] !== 'undefined') {
+          return elements[id][attr];
+        }
+        else {
+          throw new Error('Element with id: ' + id + ' does not exist');
+        }
       },
       getElement: function(id) {
         return elements[id];
