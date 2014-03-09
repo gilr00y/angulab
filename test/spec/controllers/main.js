@@ -9,16 +9,16 @@ describe('Controller: MainCtrl', function () {
   var MainCtrl, scope;
 
   // Initialize the controller
-  beforeEach(inject(function ($controller, $rootScope, $imageServiceMock, $elementServiceMock, $svgServiceMock) {
+  beforeEach(inject(function ($controller, $rootScope, $imageServiceMock, $designServiceMock, $svgServiceMock) {
     scope = $rootScope.$new();
     var imageServiceMock = $imageServiceMock;
-    var elementServiceMock = $elementServiceMock;
+    var designServiceMock = $designServiceMock;
     var svgServiceMock = $svgServiceMock;
 
     MainCtrl = $controller('MainCtrl', {
       $scope: scope,
       imageService: imageServiceMock,
-      elementService: elementServiceMock,
+      designService: designServiceMock,
       svgService: svgServiceMock
     });
   }));

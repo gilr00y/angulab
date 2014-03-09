@@ -1,6 +1,8 @@
 angular.module('angulabApp')
-  .factory('elementService', function() {
+  .factory('designService', function() {
+    var design;
     var elements = {};
+
     return {
       addElement: function(element, id) {
         elements[id] = element;
@@ -26,6 +28,7 @@ angular.module('angulabApp')
       },
       getElement: function(id) {
         return elements[id];
-      }
+      },
+      design: design
     }
   });

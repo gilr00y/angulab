@@ -15,8 +15,9 @@ angulabApp.mock.$imageServiceMockProvider = function() {
   };
 };
 
-// mock elementService
-angulabApp.mock.$elementServiceMockProvider = function() {
+// mock designService
+angulabApp.mock.$designServiceMockProvider = function() {
+  var design;
   var elements = { 'testSVG': { height: 10, width: 20 } };
   this.$get = function() {
     var $service = {
@@ -26,7 +27,8 @@ angulabApp.mock.$elementServiceMockProvider = function() {
       },
       setAttr: function(id, attr, value) {},
       getAttr: function(id, attr) {},
-      getElement: function(id) {}
+      getElement: function(id) {},
+      design: design
     };
     return $service;
   };
@@ -48,5 +50,5 @@ angulabApp.mock.$svgServiceMockProvider = function() {
 angular.module('angulabAppMock', ['ng']).provider({
   $imageServiceMock: angulabApp.mock.$imageServiceMockProvider,
   $svgServiceMock: angulabApp.mock.$svgServiceMockProvider,
-  $elementServiceMock: angulabApp.mock.$elementServiceMockProvider
+  $designServiceMock: angulabApp.mock.$designServiceMockProvider
 });

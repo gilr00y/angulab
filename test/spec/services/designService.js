@@ -1,28 +1,28 @@
 'use strict';
 
-describe('Service: elementService', function() {
+describe('Service: designService', function() {
   // load module
   beforeEach(module('angulabApp'));
 
-  var elementService;
+  var designService;
   beforeEach(inject(function($injector) {
-    elementService = $injector.get('elementService');
+    designService = $injector.get('designService');
   }));
 
   describe('allElements', function() {
     it('should initialize with no elements', function() {
-      expect(Object.keys(elementService.allElements()).length).toBe(0);
+      expect(Object.keys(designService.allElements()).length).toBe(0);
     });
   });
 
   describe('addElement', function() {
     it('should add an element to elements', function() {
-      expect(Object.keys(elementService.allElements()).length).toBe(0);
+      expect(Object.keys(designService.allElements()).length).toBe(0);
       var element = { width: 10, height: 20 };
       var id = 'testId';
-      elementService.addElement(element, id);
+      designService.addElement(element, id);
 
-      var elements = elementService.allElements();
+      var elements = designService.allElements();
       expect(Object.keys(elements).length).toBe(1);
       expect(elements[id]).toEqual(element);
     });
@@ -33,16 +33,16 @@ describe('Service: elementService', function() {
       it('should set the value of the attr', function() {
         var element = { width: 10, height: 20 };
         var id = 'testId';
-        elementService.addElement(element, id);
+        designService.addElement(element, id);
 
-        elementService.setAttr(id, 'width', 20);
-        expect(elementService.getAttr(id, 'width')).toBe(20);
+        designService.setAttr(id, 'width', 20);
+        expect(designService.getAttr(id, 'width')).toBe(20);
       });
     });
 
     describe('when element does not exist', function() {
       it('should throw an exception', function() {
-        expect(function() { elementService.setAttr('id', 'attr', 100); })
+        expect(function() { designService.setAttr('id', 'attr', 100); })
           .toThrow(new Error('Element with id: id does not exist'));
       });
     });
@@ -51,10 +51,10 @@ describe('Service: elementService', function() {
       it('should create and set the attr', function() {
         var element = { width: 10, height: 20 };
         var id = 'testId';
-        elementService.addElement(element, id);
+        designService.addElement(element, id);
 
-        elementService.setAttr(id, 'somethingElse', 20);
-        expect(elementService.getAttr(id, 'somethingElse')).toBe(20);
+        designService.setAttr(id, 'somethingElse', 20);
+        expect(designService.getAttr(id, 'somethingElse')).toBe(20);
       });
     });
   });
@@ -64,15 +64,15 @@ describe('Service: elementService', function() {
       it('should return the value of the attr', function() {
         var element = { width: 10, height: 20 };
         var id = 'testId';
-        elementService.addElement(element, id);
+        designService.addElement(element, id);
 
-        expect(elementService.getAttr(id, 'width')).toBe(10);
+        expect(designService.getAttr(id, 'width')).toBe(10);
       });
     });
 
     describe('when element does not exist', function() {
       it('should throw an exception', function() {
-        expect(function() { elementService.getAttr('id', 'attr'); })
+        expect(function() { designService.getAttr('id', 'attr'); })
           .toThrow(new Error('Element with id: id does not exist'));
       });
     });
@@ -81,9 +81,9 @@ describe('Service: elementService', function() {
       it('should return undefined', function() {
         var element = { width: 10, height: 20 };
         var id = 'testId';
-        elementService.addElement(element, id);
+        designService.addElement(element, id);
 
-        expect(typeof elementService.getAttr(id, 'somethingElse')).toBe('undefined');
+        expect(typeof designService.getAttr(id, 'somethingElse')).toBe('undefined');
       });
     });
   });
@@ -95,17 +95,17 @@ describe('Service: elementService', function() {
         var id1 = 'testId';
         var element2 = { width: 50, height: 100 };
         var id2 = 'testId2';
-        elementService.addElement(element1, id1);
-        elementService.addElement(element2, id2);
+        designService.addElement(element1, id1);
+        designService.addElement(element2, id2);
 
-        expect(elementService.getElement(id1)).toBe(element1);
-        expect(elementService.getElement(id2)).toBe(element2);
+        expect(designService.getElement(id1)).toBe(element1);
+        expect(designService.getElement(id2)).toBe(element2);
       });
     });
 
     describe('when element with id does not exist', function() {
       it('should return undefined', function() {
-        expect(typeof elementService.getElement('testId')).toBe('undefined');
+        expect(typeof designService.getElement('testId')).toBe('undefined');
       });
     });
   });

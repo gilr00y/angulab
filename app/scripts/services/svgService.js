@@ -3,7 +3,7 @@
 var SVG = window.SVG;
 
 angular.module('angulabApp')
-  .factory('svgService', ['elementService', 'handleService', '$rootScope', function(elementService, handleService, $rootScope) {
+  .factory('svgService', ['designService', 'handleService', '$rootScope', function(designService, handleService, $rootScope) {
     function disableDrag(el) {
       el.fixed();
     };
@@ -49,7 +49,7 @@ angular.module('angulabApp')
 
           var imageSize = svgEl.width();
 
-          Design.on('mousemove', function(event) {
+          designService.design.on('mousemove', function(event) {
             if(resizing) {
               var newSize = event.x - startX;
               svgEl.size(imageSize + newSize, imageSize + newSize);
@@ -57,7 +57,7 @@ angular.module('angulabApp')
             };
           });
 
-          Design.on('mouseup', resizeEnd);
+          designService.design.on('mouseup', resizeEnd);
         };
 
         function resizeEnd() {
@@ -67,8 +67,8 @@ angular.module('angulabApp')
 
           // set width and height on resize
           $rootScope.$apply(function() {
-            elementService.setAttr(imageGroup.attr('id'), 'height', element.attr('height'));
-            elementService.setAttr(imageGroup.attr('id'), 'width', element.attr('width'));
+            designService.setAttr(imageGroup.attr('id'), 'height', element.attr('height'));
+            designService.setAttr(imageGroup.attr('id'), 'width', element.attr('width'));
           });
         };
       },
@@ -89,7 +89,7 @@ angular.module('angulabApp')
 
           disableDrag(imageGroup);
 
-          Design.on('mousemove', function(event) {
+          designService.design.on('mousemove', function(event) {
             var dX, dY, newAngle;
             if(rotating) {
               dX = event.x - centerX;
@@ -107,7 +107,7 @@ angular.module('angulabApp')
             };
           });
 
-          Design.on('mouseup', endRotate);
+          designService.design.on('mouseup', endRotate);
         };
 
         function endRotate() {
@@ -116,7 +116,7 @@ angular.module('angulabApp')
           handleService.removeAll();
           // set angle
           $rootScope.$apply(function() {
-            elementService.setAttr(imageGroup.attr('id'), 'angle', svgEl.transform('rotation'));
+            designService.setAttr(imageGroup.attr('id'), 'angle', svgEl.transform('rotation'));
           });
         };
 
@@ -145,8 +145,8 @@ angular.module('angulabApp')
         imageGroup.dragmove = function(delta, event) {
           // set x and y coordinates after drag
           $rootScope.$apply(function() {
-            elementService.setAttr(imageGroup.attr('id'), 'x', event.x);
-            elementService.setAttr(imageGroup.attr('id'), 'y', event.y);
+            designService.setAttr(imageGroup.attr('id'), 'x', event.x);
+            designService.setAttr(imageGroup.attr('id'), 'y', event.y);
           });
         };
       },

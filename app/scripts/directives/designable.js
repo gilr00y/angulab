@@ -1,13 +1,13 @@
 'use strict';
 
 angular.module('angulabApp')
-  .directive('designable', ['$compile', 'elementService', function($compile, elementService) {
+  .directive('designable', ['$compile', 'designService', function($compile, designService) {
     return {
       restrict: 'A',
       link: function(scope, element, attrs) {
 
         element.on('click', function() {
-          var group = window.Design.group();
+          var group = designService.design.group();
           var image = group.image(attrs.name);
           image.size(70,70);
           image.attr({
@@ -18,7 +18,7 @@ angular.module('angulabApp')
 
           $compile(image.node)(scope);
           scope.$apply(function() {
-            elementService.addElement({ src: attrs.name }, group.node.id);
+            designService.addElement({ src: attrs.name }, group.node.id);
           });
         });
       }
