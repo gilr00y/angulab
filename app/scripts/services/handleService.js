@@ -2,21 +2,18 @@
 
 angular.module('angulabApp')
   .factory('handleService', [function() {
-    var elements = [];
+    var handles = [];
 
     return {
-      register: function(element) {
-        elements.push(element);
+      register: function(handle) {
+        handles.push(handle);
       },
 
       removeAll: function() {
-        for(var i=0; i<elements.length; i++) {
-          elements[i].remove();
+        for(var i=0; i<handles.length; i++) {
+          handles[i].remove();
         }
-        //TODO: clear elements array?
-        // this seems to introduce a bug
-        // but huge array growth is not ideal for each hover..
-        //elements = [];
+        handles = [];
       }
     };
   }]);
