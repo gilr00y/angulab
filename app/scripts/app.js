@@ -1,11 +1,6 @@
 'use strict';
 
-angular.module('angulabApp', [
-  'ngCookies',
-  'ngResource',
-  'ngSanitize',
-  'ngRoute'
-])
+angular.module('angulabApp', ['ngRoute'])
   .config(function ($routeProvider) {
     $routeProvider
       .when('/', {
