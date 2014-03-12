@@ -1,12 +1,12 @@
 'use strict';
 
-describe('Controller: MainCtrl', function () {
+describe('Controller: LabController', function () {
 
   // load the controller's module
   beforeEach(module('angulabApp'));
   beforeEach(angular.mock.module('angulabAppMock'));
 
-  var MainCtrl, scope;
+  var LabController, scope;
 
   // Initialize the controller
   beforeEach(inject(function ($controller, $rootScope, $imageServiceMock, $designServiceMock, $svgServiceMock) {
@@ -15,7 +15,7 @@ describe('Controller: MainCtrl', function () {
     var designServiceMock = $designServiceMock;
     var svgServiceMock = $svgServiceMock;
 
-    MainCtrl = $controller('MainCtrl', {
+    LabController = $controller('LabController', {
       $scope: scope,
       imageService: imageServiceMock,
       designService: designServiceMock,
@@ -23,7 +23,7 @@ describe('Controller: MainCtrl', function () {
     });
   }));
 
-  describe('MainCtrl', function() {
+  describe('LabController', function() {
     it('should set images to images from imageService', function () {
       expect(scope.images.length).toBe(1);
       expect(scope.images[0].src).toBe('something.svg');

@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('angulabApp')
-  .controller('MainCtrl', ['$scope', 'imageService', 'designService', 'svgService', function ($scope, imageService, designService, svgService) {
+  .controller('LabController', ['$scope', 'imageService', 'designService', 'svgService', function ($scope, imageService, designService, svgService) {
 
     designService.design = svgService.wrapInSVG('drawing');
 

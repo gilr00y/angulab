@@ -3,7 +3,7 @@
 var SVG = window.SVG;
 
 angular.module('angulabApp')
-  .factory('svgService', ['designService', 'handleService', '$rootScope', function(designService, handleService, $rootScope) {
+  .factory('svgService', ['$rootScope', 'designService', 'handleService', function($rootScope, designService, handleService) {
     function disableDrag(el) {
       el.fixed();
     };

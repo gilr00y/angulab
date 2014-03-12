@@ -10,7 +10,7 @@ angular.module('angulabApp', [
     $routeProvider
       .when('/', {
         templateUrl: 'views/main.html',
-        controller: 'MainCtrl'
+        controller: 'LabController'
       })
       .otherwise({
         redirectTo: '/'
