@@ -1,20 +1,22 @@
-angular.module('angulabApp')
-  .service('designService', Design);
+'use strict';
 
-function Design() {
+angular.module('angulabAppMock').
+  service('designServiceMock', DesignMock);
+
+function DesignMock() {
   this.design;
-  this.elements = {};
+  this.elements = { 'testSVG': {height: 10, width:20} };
 }
 
-Design.prototype.addElement = function(element, id) {
+DesignMock.prototype.addElement = function(element, id) {
   this.elements[id] = element;
 };
 
-Design.prototype.allElements = function() {
+DesignMock.prototype.allElements = function() {
   return this.elements;
 };
 
-Design.prototype.setAttr = function(id, attr, value) {
+DesignMock.prototype.setAttr = function(id, attr, value) {
   if(typeof this.elements[id] !== 'undefined') {
     this.elements[id][attr] = value;
   }
@@ -23,7 +25,7 @@ Design.prototype.setAttr = function(id, attr, value) {
   }
 };
 
-Design.prototype.getAttr = function(id, attr) {
+DesignMock.prototype.getAttr = function(id, attr) {
   if(typeof this.elements[id] !== 'undefined') {
     return this.elements[id][attr];
   }
@@ -32,6 +34,6 @@ Design.prototype.getAttr = function(id, attr) {
   }
 };
 
-Design.prototype.getElement = function(id) {
+DesignMock.prototype.getElement = function(id) {
   return this.elements[id];
 };

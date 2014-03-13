@@ -1,4 +1,3 @@
 'user strict';
 
-var angulabApp = {};
-angulabApp.mock = {};
+angular.module('angulabAppMock', []);

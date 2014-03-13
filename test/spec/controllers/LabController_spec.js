@@ -4,16 +4,13 @@ describe('Controller: LabController', function () {
 
   // load the controller's module
   beforeEach(module('angulabApp'));
-  beforeEach(angular.mock.module('angulabAppMock'));
+  beforeEach(module('angulabAppMock'));
 
   var LabController, scope;
 
   // Initialize the controller
-  beforeEach(inject(function ($controller, $rootScope, $imageServiceMock, $designServiceMock, $svgServiceMock) {
+  beforeEach(inject(function ($controller, $rootScope, imageServiceMock, designServiceMock, svgServiceMock) {
     scope = $rootScope.$new();
-    var imageServiceMock = $imageServiceMock;
-    var designServiceMock = $designServiceMock;
-    var svgServiceMock = $svgServiceMock;
 
     LabController = $controller('LabController', {
       $scope: scope,
