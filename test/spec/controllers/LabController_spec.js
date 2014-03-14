@@ -9,14 +9,14 @@ describe('Controller: LabController', function () {
   var LabController, scope;
 
   // Initialize the controller
-  beforeEach(inject(function ($controller, $rootScope, imageServiceMock, designServiceMock, svgServiceMock) {
+  beforeEach(inject(function ($controller, $rootScope, imageServiceMock, designServiceMock, manipulatorServiceMock) {
     scope = $rootScope.$new();
 
     LabController = $controller('LabController', {
       $scope: scope,
       imageService: imageServiceMock,
       designService: designServiceMock,
-      svgService: svgServiceMock
+      manipulatorService: manipulatorServiceMock
     });
   }));
 
