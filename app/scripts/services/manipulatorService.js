@@ -3,7 +3,7 @@
 var SVG = window.SVG;
 
 angular.module('angulabApp')
-  .factory('svgService', ['$rootScope', 'designService', 'handleService', function($rootScope, designService, handleService) {
+  .factory('manipulatorService', ['$rootScope', 'designService', 'handleService', 'svgElementFactory', function($rootScope, designService, handleService, svgElementFactory) {
     function disableDrag(el) {
       el.fixed();
     };
@@ -18,16 +18,16 @@ angular.module('angulabApp')
 
     return {
       resizable: function(element) {
-        var svgEl = SVG.get(element[0].id)
-        , imageGroup = svgEl.parent
+        var svgEl = svgElementFactory.get(element[0].id)
+        , imageGroup = svgEl.group
         , resizeHandle
         , handleSize = { width: 12, height: 12}
         , resizing = false;
 
         imageGroup.on('mouseenter', function() {
           if(!resizing) {
-            var imageHeight = svgEl.height();
-            var imageWidth = svgEl.width();
+            var imageHeight = svgEl.getHeight();
+            var imageWidth = svgEl.getWidth();
             if (!resizeHandle) {};
             resizeHandle = imageGroup.image('images/resize.png').size(20,20).move(imageWidth - handleSize.width, imageHeight - handleSize.height);
             handleService.register(resizeHandle);
@@ -45,14 +45,14 @@ angular.module('angulabApp')
 
         function resizeStart(startX, startY) {
           resizing = true;
-          disableDrag(imageGroup);
+          svgEl.disableDrag();
 
-          var imageSize = svgEl.width();
+          var imageSize = svgEl.getWidth();
 
           designService.design.on('mousemove', function(event) {
             if(resizing) {
               var newSize = event.x - startX;
-              svgEl.size(imageSize + newSize, imageSize + newSize);
+              svgEl.setSize(imageSize + newSize, imageSize + newSize);
               resizeHandle.move(imageSize + newSize - handleSize.width, imageSize + newSize - handleSize.height);
             };
           });
@@ -62,7 +62,7 @@ angular.module('angulabApp')
 
         function resizeEnd() {
           resizing = false;
-          enableDrag(imageGroup);
+          svgEl.enableDrag();
           handleService.removeAll();
 
           // set width and height on resize
@@ -73,21 +73,21 @@ angular.module('angulabApp')
         };
       },
       rotatable: function(element) {
-        var svgEl = SVG.get(element[0].id)
-            , imageGroup = svgEl.parent
+        var svgEl = svgElementFactory.get(element[0].id)
+            , imageGroup = svgEl.group
             , rotateHandle
             , initialRotateAngle
             , rotating = false; //are we currently rotating the element?
 
         function startRotate(event) {
-          initialRotateAngle = svgEl.transform('rotation')
+          initialRotateAngle = svgEl.getAngle();
           // assumes click event happens in top left corner of image
           // should be changed for greater precision
-          var centerX = event.x + svgEl.cx()
-            , centerY = event.y + svgEl.cy();
+          var centerX = event.x + svgEl.getCenterX()
+            , centerY = event.y + svgEl.getCenterY();
           rotating = true;
 
-          disableDrag(imageGroup);
+          svgEl.disableDrag();
 
           designService.design.on('mousemove', function(event) {
             var dX, dY, newAngle;
@@ -112,11 +112,11 @@ angular.module('angulabApp')
 
         function endRotate() {
           rotating = false;
-          enableDrag(imageGroup);
+          svgEl.enableDrag();
           handleService.removeAll();
           // set angle
           $rootScope.$apply(function() {
-            designService.setAttr(imageGroup.attr('id'), 'angle', svgEl.transform('rotation'));
+            designService.setAttr(imageGroup.attr('id'), 'angle', svgEl.getAngle());
           });
         };
 
@@ -135,8 +135,9 @@ angular.module('angulabApp')
         });
       },
       draggable: function(element) {
-        var imageGroup = SVG.get(element[0].id).parent;
-        imageGroup.draggable({
+        var svgEl = svgElementFactory.get(element[0].id),
+          imageGroup = svgEl.group;
+        svgEl.enableDrag({
           minX: 10,
           minY: 10,
           maxX: 590,

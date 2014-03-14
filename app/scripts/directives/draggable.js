@@ -1,11 +1,11 @@
 'use strict';
 
 angular.module('angulabApp')
-  .directive('draggable', ['svgService', function(svgService) {
+  .directive('draggable', ['manipulatorService', function(manipulatorService) {
     return {
       restrict: 'A',
       link: function(scope, element) {
-        svgService.draggable(element);
+        manipulatorService.draggable(element);
       }
     };
   }]);

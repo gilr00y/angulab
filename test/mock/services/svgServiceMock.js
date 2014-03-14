@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('angulabAppMock').
-  factory('svgServiceMock', function() {
+  factory('manipulatorServiceMock', function() {
     return {
       resizable: function() {},
       rotatable: function() {},
