@@ -3,14 +3,9 @@
 var SVG = window.SVG;
 
 angular.module('angulabApp')
-  .factory('manipulatorService', ['$rootScope', 'designService', 'handleService', 'svgElementFactory', function($rootScope, designService, handleService, svgElementFactory) {
-    function disableDrag(el) {
-      el.fixed();
-    };
-
-    function enableDrag(el) {
-      el.draggable();
-    };
+  .factory('manipulatorService', ['$rootScope', 'designService', 'svgElementFactory', function($rootScope, designService, svgElementFactory) {
+    var resizing = false;
+    var rotating = false;
 
     function radianToDegree(radians) {
       return radians * 360 / (2 * Math.PI);
@@ -20,17 +15,16 @@ angular.module('angulabApp')
       resizable: function(element) {
         var svgEl = svgElementFactory.get(element[0].id)
         , imageGroup = svgEl.group
-        , resizeHandle
-        , handleSize = { width: 12, height: 12}
-        , resizing = false;
+        , imageHeight = svgEl.getHeight()
+        , imageWidth = svgEl.getWidth()
+        , handleSize = { width: 12, height: 12};
+
+        svgEl.addOverlay('resize', 'images/resize.png', 20, imageWidth - handleSize.width, imageHeight - handleSize.height);
+        var resizeHandle = svgEl.getOverlay('resize');
 
         imageGroup.on('mouseenter', function() {
-          if(!resizing) {
-            var imageHeight = svgEl.getHeight();
-            var imageWidth = svgEl.getWidth();
-            if (!resizeHandle) {};
-            resizeHandle = imageGroup.image('images/resize.png').size(20,20).move(imageWidth - handleSize.width, imageHeight - handleSize.height);
-            handleService.register(resizeHandle);
+          if(!(resizing || rotating)) {
+            svgEl.showOverlays();
 
             resizeHandle.on('mousedown', function(event) {
               resizeStart(event.x, event.y);
@@ -38,8 +32,8 @@ angular.module('angulabApp')
           };
         })
         .on('mouseleave', function() {
-          if(!resizing) {
-            handleService.removeAll();
+          if(!(resizing || rotating)) {
+            svgEl.hideOverlays();
           };
         });
 
@@ -63,7 +57,7 @@ angular.module('angulabApp')
         function resizeEnd() {
           resizing = false;
           svgEl.enableDrag();
-          handleService.removeAll();
+          svgEl.hideOverlays();
 
           // set width and height on resize
           $rootScope.$apply(function() {
@@ -76,8 +70,10 @@ angular.module('angulabApp')
         var svgEl = svgElementFactory.get(element[0].id)
             , imageGroup = svgEl.group
             , rotateHandle
-            , initialRotateAngle
-            , rotating = false; //are we currently rotating the element?
+            , initialRotateAngle;
+
+        svgEl.addOverlay('rotate', 'images/rotate.png', 25, 0, 0);
+        var rotateHandle = svgEl.getOverlay('rotate');
 
         function startRotate(event) {
           initialRotateAngle = svgEl.getAngle();
@@ -113,7 +109,8 @@ angular.module('angulabApp')
         function endRotate() {
           rotating = false;
           svgEl.enableDrag();
-          handleService.removeAll();
+          svgEl.hideOverlays();
+
           // set angle
           $rootScope.$apply(function() {
             designService.setAttr(imageGroup.attr('id'), 'angle', svgEl.getAngle());
@@ -121,16 +118,13 @@ angular.module('angulabApp')
         };
 
         imageGroup.on('mouseenter', function() {
-          // if(!rotateHandle) {
-            rotateHandle = imageGroup.image('images/rotate.png').size(25,25);
-            handleService.register(rotateHandle);
-            rotateHandle.on('mousedown', startRotate);
-          // };
+          svgEl.showOverlays();
+          rotateHandle.on('mousedown', startRotate);
         });
 
         imageGroup.on('mouseleave', function() {
-          if(!rotating) {
-            handleService.removeAll();
+          if(!(resizing || rotating)) {
+            svgEl.hideOverlays();
           }
         });
       },

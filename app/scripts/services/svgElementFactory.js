@@ -27,6 +27,7 @@ SVGElementFactory.prototype.create = function(design, src) {
 function SVGElement(el, grp) {
   this.element = el;
   this.group = grp;
+  this.overlays = {};
 }
 
 SVGElement.prototype.getHeight = function() {
@@ -39,14 +40,6 @@ SVGElement.prototype.getWidth = function() {
 
 SVGElement.prototype.setSize = function(width, height) {
   this.element.size(width, height);
-};
-
-SVGElement.prototype.enableDrag = function(opts) {
-  this.group.draggable(opts);
-};
-
-SVGElement.prototype.disableDrag = function() {
-  this.group.fixed();
 };
 
 SVGElement.prototype.getAngle = function() {
@@ -63,4 +56,38 @@ SVGElement.prototype.getCenterY = function() {
 
 SVGElement.prototype.rotate = function(angle) {
   this.element.rotate(angle);
+};
+
+SVGElement.prototype.enableDrag = function(opts) {
+  this.group.draggable(opts);
+};
+
+SVGElement.prototype.disableDrag = function() {
+  this.group.fixed();
+};
+
+SVGElement.prototype.addOverlay = function(name, imgSrc, size, x, y) {
+  var overlay = this.group.image(imgSrc).size(size, size).move(x, y);
+  overlay.hide();
+  this.overlays[name] = overlay;
+};
+
+SVGElement.prototype.getOverlay = function(name) {
+  return this.overlays[name];
+};
+
+SVGElement.prototype.hideOverlays = function() {
+  for(var key in this.overlays) {
+    if(this.overlays.hasOwnProperty(key)) {
+      this.overlays[key].hide();
+    }
+  }
+};
+
+SVGElement.prototype.showOverlays = function() {
+  for(var key in this.overlays) {
+    if(this.overlays.hasOwnProperty(key)) {
+      this.overlays[key].show();
+    }
+  }
 };
