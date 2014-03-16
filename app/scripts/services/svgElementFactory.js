@@ -7,20 +7,32 @@ angular.module('angulabApp').service('svgElementFactory', SVGElementFactory);
 //SVGElement.$inject = ['designService'];
 
 function SVGElementFactory() {
+  this.svgElements = {};
 }
 
-// get existing svg element
-SVGElementFactory.prototype.get = function(id) {
-  var element = SVG.get(id);
+// get existing svg element on page
+SVGElementFactory.prototype.getByElement = function(elId) {
+  var element = SVG.get(elId);
   var group = element.parent;
-  return new SVGElement(element, group);
+  var id = group.node.id;
+  var svgEl;
+  if(this.svgElements[id]) {
+    svgEl = this.svgElements[id];
+  } else {
+    svgEl = new SVGElement(element, group);
+    this.svgElements[id] = svgEl;
+  }
+
+  return svgEl;
 };
 
 // create new svg element
 SVGElementFactory.prototype.create = function(design, src) {
   var group = design.group();
   var element = group.image(src);
-  return new SVGElement(element, group);
+  var svgEl = new SVGElement(element, group);
+  this.svgElements[group.node.id] = svgEl;
+  return svgEl;
 };
 
 
@@ -56,6 +68,18 @@ SVGElement.prototype.getCenterY = function() {
 
 SVGElement.prototype.rotate = function(angle) {
   this.element.rotate(angle);
+};
+
+SVGElement.prototype.getNode = function() {
+  return this.element.node;
+};
+
+SVGElement.prototype.setAttrs = function(attrObj) {
+  this.element.attr(attrObj);
+};
+
+SVGElement.prototype.getId = function() {
+  return this.group.node.id;
 };
 
 SVGElement.prototype.enableDrag = function(opts) {
